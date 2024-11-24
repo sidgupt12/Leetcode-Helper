@@ -157,5 +157,5 @@ func main() {
 	if err != nil {
 		fmt.Println("Error starting server:", err)
 	}
-	extractProblemName(receivedURL)
+
 }
