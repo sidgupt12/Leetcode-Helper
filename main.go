@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/google/generative-ai-go/genai"
-	"github.com/joho/godotenv"
 	"google.golang.org/api/option"
 )
 
@@ -21,12 +20,6 @@ type RequestData struct {
 	URL         string `json:"url"`
 	Description string `json:"description`
 	APIKey      string `json:"apiKey"`
-}
-
-func init() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("error loading .env file")
-	}
 }
 
 // function that solves the problem and gives string based output
