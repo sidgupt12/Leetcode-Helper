@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 
 	"github.com/google/generative-ai-go/genai"
@@ -21,6 +20,7 @@ var receivedURL string
 type RequestData struct {
 	URL         string `json:"url"`
 	Description string `json:"description`
+	APIKey      string `json:"apiKey"`
 }
 
 func init() {
@@ -116,6 +116,11 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		if reqData.APIKey == "" {
+			http.Error(w, "API key is required", http.StatusBadRequest)
+			return
+		}
+
 		// Extract the problem name from the URL
 		//the problem name will have "-" in between the words
 		receivedURL = reqData.URL
@@ -131,21 +136,22 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Get the API key from the envvironment
-		apiKey := os.Getenv("API_KEY")
-		if apiKey == "" {
-			log.Fatal("API_KEY not set in evnvironment")
-		}
+		// apiKey := os.Getenv("API_KEY")
+		// if apiKey == "" {
+		// 	log.Fatal("API_KEY not set in evnvironment")
+		// }
 
 		// Solve the problem and get the hint
 		hint := ""
 		var err1 error
 		if !check_Leetcode {
 			problem := string(s[2])
-			hint, err1 = solveProblem(apiKey, problem, reqData.Description)
+			hint, err1 = solveProblem(reqData.APIKey, problem, reqData.Description)
 			if err1 != nil {
 				fmt.Println(err1)
 			}
-			fmt.Println(hint)
+			//fmt.Println(hint)
+			fmt.Println("Done reviewing the problem")
 		}
 
 		// Create a response map to send back to the extension

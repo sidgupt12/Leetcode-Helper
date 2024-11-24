@@ -9,6 +9,14 @@
     <div class="container">
       <h1>Leetcode Helper</h1>
       <h3>By Siddhant Gupta</h3>
+      
+      <!-- Add this new section for API key -->
+      <div class="api-key-container">
+          <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API Key" class="api-key-input">
+          <button id="saveApiKey" class="save-key-btn">Save Key</button>
+          <div class="api-key-status"></div>
+      </div>
+
       <textarea id="userDescription" placeholder="Describe your approach or what kind of help you need..." class="user-input"></textarea>
       <button id="getHint">Get Hint</button>
       <div class="loader-container">
