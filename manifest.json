@@ -3,7 +3,9 @@
     "name": "Leetcode Helper",
     "version": "1.0",
     "permissions": ["activeTab", "scripting", "storage"],
-    "host_permissions": ["http://127.0.0.1:8080/*"],
+    "host_permissions": [
+        "https://leetcode-helper-2.onrender.com/*"
+    ],
     "icons": {
         "128": "HELPER.png"
     },

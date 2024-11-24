@@ -64,7 +64,7 @@ document.getElementById('getHint').addEventListener('click', function () {
                 return;
             }
 
-            fetch('http://127.0.0.1:8080/capture-url', {
+            fetch('https://leetcode-helper-2.onrender.com/capture-url', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -138,7 +138,7 @@ document.getElementById('getHint').addEventListener('click', function () {
                 urlElement.innerHTML = `
                     <div class="response-item">
                         <div class="title">Error</div>
-                        <div class="content">Failed to fetch please ensure you entered the correct API</div>
+                        <div class="content">Failed to fetch. Please ensure you entered the correct API key and try again.</div>
                     </div>`;
                 urlElement.classList.add('active');
             });
