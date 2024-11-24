@@ -23,8 +23,8 @@ document.getElementById('getHint').addEventListener('click', function () {
             // Construct the message to display all responses
             let responseMessage = "";
 
-            if (data.url) {
-                responseMessage += `Problem Title: ${data.url}<br>`;
+            if (data.Problem_Title) {
+                responseMessage += `Problem Title: ${data.Problem_Title}<br>`;
             }
             if (data.message) {
                 responseMessage += `Message: ${data.message}<br>`;

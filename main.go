@@ -88,8 +88,10 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
+		//RequestData struct to hold incoming url, defined above
 		var reqData RequestData
-		// Decode the incoming JSON to extract the URL
+
+		// Decode the incoming JSON to extract the URL and put it in the reqData struct
 		err := json.NewDecoder(r.Body).Decode(&reqData)
 		if err != nil {
 			fmt.Println("Error decoding JSON:", err)
@@ -97,41 +99,49 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		// Extract the problem name from the URL
+		//the problem name will have "-" in between the words
 		receivedURL = reqData.URL
 		s, err := extractProblemName(receivedURL)
 		if err != nil {
 			fmt.Println("Error extracting problem name:", err)
 		}
 
+		//check if the url is from leetcode or not
 		check_Leetcode := false
-		//ans := ""
-
 		if s[1] != "problems" {
 			check_Leetcode = true
 		}
 
+		// Get the API key from the envvironment
 		apiKey := os.Getenv("API_KEY")
 		if apiKey == "" {
 			log.Fatal("API_KEY not set in evnvironment")
 		}
-		problem := string(s[2])
 
-		hint, err1 := solveProblem(apiKey, problem)
-		if err1 != nil {
-			fmt.Println(err1)
+		// Solve the problem and get the hint
+		hint := ""
+		var err1 error
+		if !check_Leetcode {
+			problem := string(s[2])
+			hint, err1 = solveProblem(apiKey, problem)
+			if err1 != nil {
+				fmt.Println(err1)
+			}
+			fmt.Println(hint)
 		}
-		fmt.Println(hint)
 
+		// Create a response map to send back to the extension
 		var response map[string]string
 		if check_Leetcode {
 			response = map[string]string{
-				"Problem Title": "Go to any leetcode problem page to use this extension",
+				"Problem_Title": "Go to any leetcode problem page to use this extension",
 				"message":       "cannot extract",
 				"hint":          "no hints",
 			}
 		} else {
 			response = map[string]string{
-				"Problem Title": s[2],
+				"Problem_Title": string(s[2]),
 				"message":       "This is AI generated hint so please verify it",
 				"hint":          hint,
 			}
@@ -143,7 +153,7 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 	} else {
 		// Handle non-POST methods
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		http.Error(w, "Only POST method allowed", http.StatusMethodNotAllowed)
 	}
 }
 
