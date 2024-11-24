@@ -128,12 +128,6 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 			check_Leetcode = true
 		}
 
-		// Get the API key from the envvironment
-		// apiKey := os.Getenv("API_KEY")
-		// if apiKey == "" {
-		// 	log.Fatal("API_KEY not set in evnvironment")
-		// }
-
 		// Solve the problem and get the hint
 		hint := ""
 		var err1 error
