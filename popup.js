@@ -1,6 +1,7 @@
 document.getElementById('getHint').addEventListener('click', function () {
     const urlElement = document.getElementById('url');
     const loaderContainer = document.querySelector('.loader-container');
+    const userDescription = document.getElementById('userDescription').value;
     
     // Show loader, hide previous results
     loaderContainer.classList.add('active');
@@ -14,7 +15,10 @@ document.getElementById('getHint').addEventListener('click', function () {
         fetch('http://127.0.0.1:8080/capture-url', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url: url })
+            body: JSON.stringify({
+                 url: url,
+                 description: userDescription
+                 })
         })
         .then(response => {
             if (!response.ok) {

@@ -19,7 +19,8 @@ var receivedURL string
 
 // Struct to hold the incoming URL from the extension
 type RequestData struct {
-	URL string `json:"url"`
+	URL         string `json:"url"`
+	Description string `json:"description`
 }
 
 func init() {
@@ -29,20 +30,26 @@ func init() {
 }
 
 // function that solves the problem and gives string based output
-func solveProblem(apiKey, problem string) (string, error) {
+func solveProblem(apiKey, problem, description string) (string, error) {
 	//setting up prompt
-	promptTemplate := `You are an expert problem-solving assistant. Your task is to guide users in solving problems step by step without providing any code. 
+	promptTemplate := `You are an expert problem-solving assistant. Your task is to guide users in solving LeetCode problems step by step without providing any code.
 
-	Given a LeetCode problem name, provide only a high-level explanation of the steps required to solve the problem. Ensure your response focuses on the logic, strategy, and algorithmic thinking but strictly avoids writing or suggesting any code.
-	
-	Problem: "{{problem_name}}"
-	
-	Steps to solve:
-	1. 
-	2. 
-	3. 
-	`
+    Problem: "{{problem_name}}"
+    
+    User's Description/Approach: "{{user_description}}"
+
+    Based on the user's input, provide:
+    1. An analysis of their current approach (if provided)
+    2. Step-by-step hints and guidance
+    3. Common pitfalls to avoid
+    4. Optimization suggestions
+
+    Focus on the logic, strategy, and algorithmic thinking but strictly avoid writing or suggesting any code.
+    
+    Steps to solve:`
+
 	prompt := strings.ReplaceAll(promptTemplate, "{{problem_name}}", problem)
+	prompt = strings.ReplaceAll(prompt, "{{user_description}}", description)
 
 	//setting up gemini API for solving the question of giving hint
 	ctx := context.Background()
@@ -76,6 +83,16 @@ func extractProblemName(problemURL string) ([]string, error) {
 		return nil, fmt.Errorf("failed to parse URL: %w", err)
 	}
 	return strings.Split(parsedURL.Path, "/"), nil
+}
+
+func formatstring(title string) string {
+	words := strings.Split(title, "-")
+	for i, word := range words {
+		if len(word) > 0 {
+			words[i] = strings.ToUpper((word[:1])) + word[1:]
+		}
+	}
+	return strings.Join(words, " ")
 }
 
 func urlHandler(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +141,7 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 		var err1 error
 		if !check_Leetcode {
 			problem := string(s[2])
-			hint, err1 = solveProblem(apiKey, problem)
+			hint, err1 = solveProblem(apiKey, problem, reqData.Description)
 			if err1 != nil {
 				fmt.Println(err1)
 			}
@@ -141,8 +158,8 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			response = map[string]string{
-				"Problem_Title": string(s[2]),
-				"message":       "This is AI generated hint so please verify it",
+				"Problem_Title": formatstring(string(s[2])),
+				"message":       "This hint is AI-generated. Please review LeetCode’s terms and conditions to ensure compliance before use.",
 				"hint":          hint,
 			}
 		}
