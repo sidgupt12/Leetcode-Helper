@@ -1,6 +1,216 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    width: 400px;
+    min-height: 300px;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+h1 {
+    font-size: 28px;
+    background: linear-gradient(90deg, #00ff87 0%, #60efff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+h3 {
+    font-size: 16px;
+    color: #8a8a8a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#getHint {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #00ff87 0%, #60efff 100%);
+    color: #1a1a2e;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+}
+
+#getHint:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 135, 0.3);
+}
+
+.loader-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.loader-container.active {
+    display: flex;
+}
+
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(0, 255, 135, 0.3);
+    border-radius: 50%;
+    border-top-color: #00ff87;
+    animation: spin 1s ease-in-out infinite;
+}
+
+.loader-text {
+    color: #00ff87;
+    font-size: 14px;
+    text-align: center;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
 #url {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
     word-wrap: break-word;
-    max-width: 300px; 
+    max-width: 100%;
     overflow-wrap: break-word;
-    white-space: normal; 
+    white-space: normal;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+#url.active {
+    opacity: 1;
+    height: auto;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.hint-list {
+    list-style: none;
+    counter-reset: hint-counter;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.hint-item {
+    position: relative;
+    padding: 15px 20px 15px 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.hint-item:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.hint-item::before {
+    counter-increment: hint-counter;
+    content: counter(hint-counter);
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(90deg, #00ff87 0%, #60efff 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #1a1a2e;
+    font-size: 14px;
+}
+
+.hint-title {
+    font-weight: bold;
+    color: #00ff87;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.hint-content {
+    color: #ffffff;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.response-item {
+    margin: 10px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid #00ff87;
+}
+
+.response-item .title {
+    color: #00ff87;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.response-item .content {
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #00ff87 0%, #60efff 100%);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #00ff87 20%, #60efff 80%);
 }

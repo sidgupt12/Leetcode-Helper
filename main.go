@@ -136,8 +136,8 @@ func urlHandler(w http.ResponseWriter, r *http.Request) {
 		if check_Leetcode {
 			response = map[string]string{
 				"Problem_Title": "Go to any leetcode problem page to use this extension",
-				"message":       "cannot extract",
-				"hint":          "no hints",
+				"message":       "Cannot extract any problem name from the URL",
+				"hint":          "No hint available",
 			}
 		} else {
 			response = map[string]string{
